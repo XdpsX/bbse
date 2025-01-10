@@ -1,7 +1,14 @@
 package com.bbse.media.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "media")
 public class Media {
@@ -16,5 +23,11 @@ public class Media {
 
     private String filePath;
 
-    private String mediaType;
+    private String fileType;
+
+    public String getUrl(){
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(String.format("/media/%1$s/file/%2$s", id, fileName))
+                .build().toUriString();
+    }
 }
