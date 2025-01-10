@@ -1,6 +1,7 @@
 package com.bbse.media.repository.impl;
 
 import com.bbse.media.repository.FileSystemRepository;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -20,12 +21,13 @@ public class FileSystemRepositoryImpl implements FileSystemRepository {
     private String directory;
 
     @Override
-    public String persistFile(byte[] content, String filename) throws IOException {
+    public String persistFile(byte[] content, String filename) {
         return persistFile(content, filename, null);
     }
 
+    @SneakyThrows(IOException.class)
     @Override
-    public String persistFile(byte[] content, String filename, String folderName) throws IOException {
+    public String persistFile(byte[] content, String filename, String folderName) {
         String uploadDir = getUploadDirectory(folderName);
         File directory = new File(uploadDir);
         checkDirectoryExists(directory);
@@ -66,8 +68,9 @@ public class FileSystemRepositoryImpl implements FileSystemRepository {
         return fileStorageLocation.resolve(filename);
     }
 
+    @SneakyThrows(IOException.class)
     @Override
-    public void deleteFile(String filePath) throws IOException {
+    public void deleteFile(String filePath) {
         Path path = Paths.get(filePath);
         if (Files.exists(path)) {
             Files.delete(path);
@@ -78,8 +81,9 @@ public class FileSystemRepositoryImpl implements FileSystemRepository {
         }
     }
 
+    @SneakyThrows(IOException.class)
     @Override
-    public InputStream getFile(String filePath) throws IOException {
+    public InputStream getFile(String filePath) {
         Path path = Paths.get(filePath);
         if (!Files.exists(path)) {
             throw new IllegalStateException(String.format("File %s does not exist.", filePath));

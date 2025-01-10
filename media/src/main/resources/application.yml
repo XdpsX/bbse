@@ -13,6 +13,9 @@ spring:
       ddl-auto: none
   liquibase:
     enabled: true
+  servlet:
+    multipart:
+      max-file-size: 2MB
 
 app:
   file:

@@ -1,8 +1,10 @@
 package com.bbse.media.service.impl;
 
+import com.bbse.media.constant.MessageCode;
 import com.bbse.media.dto.CreateMediaDTO;
 import com.bbse.media.dto.FileMediaDTO;
 import com.bbse.media.dto.ViewMediaDTO;
+import com.bbse.media.exception.NotFoundException;
 import com.bbse.media.mapper.MediaMapper;
 import com.bbse.media.model.Media;
 import com.bbse.media.repository.FileSystemRepository;
@@ -14,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 @Service
@@ -23,7 +26,7 @@ public class MediaServiceImpl implements MediaService {
     private final MediaRepository mediaRepository;
     private final FileSystemRepository fileSystemRepository;
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     @Override
     public ViewMediaDTO createMedia(CreateMediaDTO request) {
         Media media = Media.builder()
@@ -41,11 +44,10 @@ public class MediaServiceImpl implements MediaService {
         return MediaMapper.INSTANCE.toViewMediaDTO(mediaRepository.save(media));
     }
 
-    @SneakyThrows
     @Override
     public void deleteMedia(Long id) {
         Media media = mediaRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException(MessageCode.MEDIA_NOT_FOUND, id));
         mediaRepository.deleteById(id);
         fileSystemRepository.deleteFile(media.getFilePath());
     }
@@ -53,15 +55,14 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public ViewMediaDTO getMedia(Long id) {
         Media media = mediaRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException(MessageCode.MEDIA_NOT_FOUND, id));
         return MediaMapper.INSTANCE.toViewMediaDTO(media);
     }
 
-    @SneakyThrows
     @Override
     public FileMediaDTO getFileMedia(Long id, String fileName) {
         Media media = mediaRepository.findByIdAndFileName(id, fileName)
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException(MessageCode.MEDIA_NOT_FOUND, id));
         InputStream fileContent = fileSystemRepository.getFile(media.getFilePath());
         MediaType mediaType = MediaType.valueOf(media.getFileType());
 
