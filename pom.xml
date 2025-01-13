@@ -31,6 +31,7 @@
     <modules>
         <module>media</module>
         <module>product</module>
+        <module>identity</module>
     </modules>
 
     <properties>
