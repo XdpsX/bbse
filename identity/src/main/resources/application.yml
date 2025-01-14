@@ -1,0 +1,15 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: identity
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/identity
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    enabled: true
