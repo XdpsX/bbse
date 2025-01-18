@@ -17,4 +17,13 @@ public class Role {
     private String name;
 
     private String description;
+
+    public final static String ADMIN = "ADMIN";
+    public final static String USER = "USER";
+
+    public final static String PREFIX = "ROLE_";
+
+    public String getAuthority() {
+        return PREFIX + name;
+    }
 }

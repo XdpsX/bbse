@@ -2,8 +2,8 @@ package com.bbse.identity.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.ZonedDateTime;
 
@@ -25,10 +25,10 @@ public class User {
 
     private String password;
 
-    @CreatedDate
+    @CreationTimestamp
     private ZonedDateTime createdAt;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     private ZonedDateTime updatedAt;
 
     @ManyToOne

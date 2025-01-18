@@ -13,3 +13,10 @@ spring:
       ddl-auto: none
   liquibase:
     enabled: true
+
+app:
+  security:
+    access-secret: ${ACCESS_SECRET_KEY}
+    access-expiration-seconds: 36000
+    refresh-secret: ${REFRESH_SECRET_KEY}
+    refresh-expiration-seconds: 360000
